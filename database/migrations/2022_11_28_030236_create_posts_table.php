@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->boolean("admin")->default(false);
-            $table->rememberToken();
+            $table->unsignedBigInteger("author_id");
+            $table->string("title");
+            $table->text("content");
             $table->timestamps();
+
+            $table->foreign("author_id")->references("id")->on("users")->onDelete("cascade");
         });
     }
 
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('posts');
     }
 };
